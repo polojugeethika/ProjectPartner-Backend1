@@ -14,7 +14,7 @@ Open PowerShell in this `backend` folder and set the variables for the current t
 $env:MAIL_USERNAME = "your-sender@gmail.com"
 $env:MAIL_PASSWORD = "your-16-character-app-password"
 $env:MAIL_FROM = "your-sender@gmail.com"
-$env:APP_PUBLIC_BASE_URL = "http://localhost:8080"
+$env:APP_PUBLIC_BASE_URL = "https://projectpartner-backend1-2.onrender.com"
 $env:EMAIL_ACTION_TOKEN_HOURS = "24"
 ```
 
@@ -30,7 +30,7 @@ If email delivery is not configured or SMTP fails, the collaboration request is 
 
 ## 2. Local testing limitations
 
-`http://localhost:8080` works only on the computer where the backend is running. For a Gmail link to work on a phone or another computer, deploy the backend to a publicly reachable HTTPS address and set:
+`https://projectpartner-backend1-2.onrender.com` works only on the computer where the backend is running. For a Gmail link to work on a phone or another computer, deploy the backend to a publicly reachable HTTPS address and set:
 
 ```powershell
 $env:APP_PUBLIC_BASE_URL = "https://your-public-backend.example"

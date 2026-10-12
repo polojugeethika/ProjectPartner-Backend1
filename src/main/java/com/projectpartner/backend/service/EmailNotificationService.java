@@ -27,7 +27,7 @@ public class EmailNotificationService {
     private final EmailActionTokenRepository tokens;
     private final SecureRandom secureRandom = new SecureRandom();
 
-    @Value("${app.public-base-url:http://localhost:8080}")
+    @Value("${app.public-base-url:https://projectpartner-backend1-2.onrender.com}")
     private String publicBaseUrl;
     @Value("${app.email.from:}")
     private String fromAddress;
