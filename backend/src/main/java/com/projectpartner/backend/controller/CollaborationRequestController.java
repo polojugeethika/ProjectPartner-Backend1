@@ -1,4 +1,4 @@
-```java
+
 package com.projectpartner.backend.controller;
 
 import java.util.List;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,11 +21,16 @@ import com.projectpartner.backend.service.CollaborationRequestService;
 
 @RestController
 @RequestMapping("/api/collaboration-requests")
-@CrossOrigin(origins = {
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "https://projectpartner-frontend1.onrender.com"
-})
+@CrossOrigin(
+    origins = "https://projectpartner-frontend1.onrender.com",
+    allowedHeaders = "*",
+    methods = {
+        RequestMethod.GET,
+        RequestMethod.POST,
+        RequestMethod.PUT,
+        RequestMethod.OPTIONS
+    }
+)
 public class CollaborationRequestController {
 
     private final CollaborationRequestService service;
@@ -70,4 +76,3 @@ public class CollaborationRequestController {
         return service.respondToRequest(requestId, studentId, status);
     }
 }
-```
