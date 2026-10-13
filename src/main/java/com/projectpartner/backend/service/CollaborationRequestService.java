@@ -12,13 +12,10 @@ import com.projectpartner.backend.repository.CollaborationRequestRepository;
 public class CollaborationRequestService {
 
     private final CollaborationRequestRepository repository;
-    private final EmailNotificationService emailService;
 
     public CollaborationRequestService(
-            CollaborationRequestRepository repository,
-            EmailNotificationService emailService) {
+            CollaborationRequestRepository repository) {
         this.repository = repository;
-        this.emailService = emailService;
     }
 
     public CollaborationRequest sendRequest(
@@ -40,13 +37,7 @@ public class CollaborationRequestService {
         request.setMessage(message);
         request.setStatus("PENDING");
 
-        // First save the request to generate its ID
-        CollaborationRequest savedRequest = repository.save(request);
-
-        // Then send the notification email
-        emailService.sendCollaborationRequestEmail(savedRequest);
-
-        return savedRequest;
+        return repository.save(request);
     }
 
     public List<CollaborationRequest> getSentRequests(Long studentId) {
