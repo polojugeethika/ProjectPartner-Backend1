@@ -1,3 +1,4 @@
+
 package com.projectpartner.backend.controller;
 
 import java.util.List;
@@ -19,52 +20,71 @@ import com.projectpartner.backend.service.CollaborationRequestService;
 
 @RestController
 @RequestMapping("/api/collaboration-requests")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(
+    origins = {
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "https://projectpartner-frontend1.onrender.com"
+    },
+    allowedHeaders = "*",
+    methods = {
+        org.springframework.web.bind.annotation.RequestMethod.GET,
+        org.springframework.web.bind.annotation.RequestMethod.POST,
+        org.springframework.web.bind.annotation.RequestMethod.PUT,
+        org.springframework.web.bind.annotation.RequestMethod.OPTIONS
+    }
+)
 public class CollaborationRequestController {
 
+    private final CollaborationRequestService service;
 
-private final CollaborationRequestService service;
+    public CollaborationRequestController(
+            CollaborationRequestService service) {
+        this.service = service;
+    }
 
-public CollaborationRequestController(
-        CollaborationRequestService service) {
-    this.service = service;
-}
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public CollaborationRequest sendRequest(
+            @RequestBody Map<String, Object> body) {
 
-@PostMapping
-@ResponseStatus(HttpStatus.CREATED)
-public CollaborationRequest sendRequest(
-        @RequestBody Map<String, Object> body) {
+        Long senderId =
+                Long.valueOf(body.get("senderId").toString());
 
-    Long senderId = Long.valueOf(body.get("senderId").toString());
-    Long receiverId = Long.valueOf(body.get("receiverId").toString());
-    String message = body.get("message") == null
-            ? "" : body.get("message").toString();
+        Long receiverId =
+                Long.valueOf(body.get("receiverId").toString());
 
-    return service.sendRequest(senderId, receiverId, message);
-}
+        String message = body.get("message") == null
+                ? ""
+                : body.get("message").toString();
 
-@GetMapping("/sent/{studentId}")
-public List<CollaborationRequest> getSentRequests(
-        @PathVariable Long studentId) {
-    return service.getSentRequests(studentId);
-}
+        return service.sendRequest(senderId, receiverId, message);
+    }
 
-@GetMapping("/received/{studentId}")
-public List<CollaborationRequest> getReceivedRequests(
-        @PathVariable Long studentId) {
-    return service.getReceivedRequests(studentId);
-}
+    @GetMapping("/sent/{studentId}")
+    public List<CollaborationRequest> getSentRequests(
+            @PathVariable Long studentId) {
+        return service.getSentRequests(studentId);
+    }
 
-@PutMapping("/{requestId}/respond")
-public CollaborationRequest respondToRequest(
-        @PathVariable Long requestId,
-        @RequestBody Map<String, Object> body) {
+    @GetMapping("/received/{studentId}")
+    public List<CollaborationRequest> getReceivedRequests(
+            @PathVariable Long studentId) {
+        return service.getReceivedRequests(studentId);
+    }
 
-    Long studentId = Long.valueOf(body.get("studentId").toString());
-    String status = body.get("status").toString().toUpperCase();
+    @PutMapping("/{requestId}/respond")
+    public CollaborationRequest respondToRequest(
+            @PathVariable Long requestId,
+            @RequestBody Map<String, Object> body) {
 
-    return service.respondToRequest(requestId, studentId, status);
+        Long studentId =
+                Long.valueOf(body.get("studentId").toString());
 
+        String status =
+                body.get("status").toString().toUpperCase();
 
-}
+        return service.respondToRequest(
+                requestId, studentId, status);
+    }
 }
